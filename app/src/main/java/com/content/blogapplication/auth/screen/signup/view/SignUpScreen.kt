@@ -1,9 +1,11 @@
 package com.content.blogapplication.auth.screen.signup.view
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -31,13 +33,17 @@ import androidx.compose.ui.unit.sp
 import kotlinx.serialization.Contextual
 
 @Composable
-fun SignUpScreen(){
+fun SignUpScreen(
+    innerPadding : PaddingValues,
+    navigateToHomeScreen : () -> Unit
+){
 
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
     Box(modifier = Modifier
         .fillMaxSize()
+        .padding(innerPadding )
         .padding(16.dp)
     ) {
 
@@ -101,7 +107,8 @@ fun SignUpScreen(){
                             shape = RoundedCornerShape(12.dp)
                         )
                         .padding(horizontal = 20.dp, vertical = 20.dp)
-                        .fillMaxWidth(),
+                        .fillMaxWidth()
+                        .clickable(onClick = {navigateToHomeScreen.invoke()}),
                     text = "Sign Up",
                     textAlign = TextAlign.Center,
                     fontSize = 16.sp,
@@ -120,5 +127,5 @@ fun SignUpScreen(){
 @Composable
 @Preview(showBackground = true)
 fun SignUpScreenPreview(){
-    SignUpScreen()
+    //SignUpScreen()
 }
