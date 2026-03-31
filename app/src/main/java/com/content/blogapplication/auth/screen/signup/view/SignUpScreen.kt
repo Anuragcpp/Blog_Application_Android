@@ -30,6 +30,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.content.blogapplication.auth.viewmodel.AuthViewModel
 import kotlinx.serialization.Contextual
 
 @Composable
@@ -38,6 +40,7 @@ fun SignUpScreen(
     navigateToHomeScreen : () -> Unit
 ){
 
+    val authViewModel : AuthViewModel = viewModel()
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
