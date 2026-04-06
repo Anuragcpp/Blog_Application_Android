@@ -1,5 +1,6 @@
 package com.content.blogapplication.auth.screen.signup.view
 
+import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -26,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -49,6 +51,7 @@ fun SignUpScreen(
     val signUpSate = authViewModel.signUpLiveData.observeAsState()
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    val context : Context = LocalContext.current
 
     Box(modifier = Modifier
         .fillMaxSize()
@@ -135,11 +138,12 @@ fun SignUpScreen(
                         }
 
                         Status.ERROR -> {
-                            Toast.
+                            Toast.makeText(context,"Error in calling the api", Toast.LENGTH_SHORT).show()
                         }
 
                         Status.SUCCESS -> {
-
+                            Toast.makeText(context,"Signup Successful", Toast.LENGTH_SHORT).show()
+                            navigateToHomeScreen.invoke()
                         }
                     }
                 }
