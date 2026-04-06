@@ -1,5 +1,7 @@
 package com.content.blogapplication.auth.screen.signup.view
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -12,10 +14,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -23,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -30,6 +35,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.content.blogapplication.auth.viewmodel.AuthViewModel
+import com.content.blogapplication.util.network.Resource
+import com.content.blogapplication.util.network.Status
 import kotlinx.serialization.Contextual
 
 @Composable
@@ -38,8 +47,12 @@ fun SignUpScreen(
     navigateToHomeScreen : () -> Unit
 ){
 
+    val authViewModel : AuthViewModel = viewModel()
+    val signUpSate = authViewModel.signUpLiveData.observeAsState()
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var name by remember { mutableStateOf("") }
+    val context : Context = LocalContext.current
 
     Box(modifier = Modifier
         .fillMaxSize()
@@ -82,6 +95,16 @@ fun SignUpScreen(
 
                 OutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
+                    value = name,
+                    onValueChange = {name = it},
+                    label = {Text("Name")},
+                    singleLine = true
+                )
+
+                Spacer(modifier = Modifier.height(10.dp))
+
+                OutlinedTextField(
+                    modifier = Modifier.fillMaxWidth(),
                     value = email,
                     onValueChange = {email = it},
                     label = {Text("Email")},
@@ -108,7 +131,7 @@ fun SignUpScreen(
                         )
                         .padding(horizontal = 20.dp, vertical = 20.dp)
                         .fillMaxWidth()
-                        .clickable(onClick = {navigateToHomeScreen.invoke()}),
+                        .clickable(onClick = {}), //navigateToHomeScreen.invoke()}),
                     text = "Sign Up",
                     textAlign = TextAlign.Center,
                     fontSize = 16.sp,
@@ -117,12 +140,36 @@ fun SignUpScreen(
 
             }
 
+            when (val state = signUpSate.value) {
+                null -> {}
+                else -> {
+                    when(state.status){
+                        Status.LOADING -> {
+                            CircularProgressIndicator()
+                        }
+
+                        Status.ERROR -> {
+                            Toast.makeText(context,"Error in calling the api", Toast.LENGTH_SHORT).show()
+                        }
+
+                        Status.SUCCESS -> {
+                            Toast.makeText(context,"Signup Successful", Toast.LENGTH_SHORT).show()
+                            navigateToHomeScreen.invoke()
+                        }
+                    }
+                }
+
+            }
+
         }
 
     }
 
-
 }
+
+
+
+//private fun signUpUser(authViewModel: AuthViewModel,name: JvmName)
 
 @Composable
 @Preview(showBackground = true)
