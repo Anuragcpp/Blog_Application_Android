@@ -51,6 +51,7 @@ fun SignUpScreen(
     val signUpSate = authViewModel.signUpLiveData.observeAsState()
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var name by remember { mutableStateOf("") }
     val context : Context = LocalContext.current
 
     Box(modifier = Modifier
@@ -94,6 +95,16 @@ fun SignUpScreen(
 
                 OutlinedTextField(
                     modifier = Modifier.fillMaxWidth(),
+                    value = name,
+                    onValueChange = {name = it},
+                    label = {Text("Name")},
+                    singleLine = true
+                )
+
+                Spacer(modifier = Modifier.height(10.dp))
+
+                OutlinedTextField(
+                    modifier = Modifier.fillMaxWidth(),
                     value = email,
                     onValueChange = {email = it},
                     label = {Text("Email")},
@@ -120,7 +131,7 @@ fun SignUpScreen(
                         )
                         .padding(horizontal = 20.dp, vertical = 20.dp)
                         .fillMaxWidth()
-                        .clickable(onClick = {navigateToHomeScreen.invoke()}),
+                        .clickable(onClick = {}), //navigateToHomeScreen.invoke()}),
                     text = "Sign Up",
                     textAlign = TextAlign.Center,
                     fontSize = 16.sp,
@@ -154,8 +165,11 @@ fun SignUpScreen(
 
     }
 
-
 }
+
+
+
+//private fun signUpUser(authViewModel: AuthViewModel,name: JvmName)
 
 @Composable
 @Preview(showBackground = true)
