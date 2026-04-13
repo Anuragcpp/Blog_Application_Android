@@ -1,6 +1,7 @@
 package com.content.blogapplication.auth.screen.signup.view
 
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -18,6 +19,8 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -36,7 +39,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.content.blogapplication.auth.data.model.SignUpResponse
 import com.content.blogapplication.auth.viewmodel.AuthViewModel
+import com.content.blogapplication.util.network.ApiStateResource
 import com.content.blogapplication.util.network.Resource
 import com.content.blogapplication.util.network.Status
 import kotlinx.serialization.Contextual
@@ -48,11 +53,26 @@ fun SignUpScreen(
 ){
 
     val authViewModel : AuthViewModel = viewModel()
-    val signUpSate = authViewModel.signUpLiveData.observeAsState()
+    val signUpSate = authViewModel.signUpUserState.collectAsState()
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var name by remember { mutableStateOf("") }
     val context : Context = LocalContext.current
+
+
+    LaunchedEffect(signUpSate) {
+        when(signUpSate){
+            is ApiStateResource.Success<*>-> {
+                Toast.makeText(context,"Signup Successfull", Toast.LENGTH_SHORT).show()
+                navigateToHomeScreen();
+            }
+
+            is ApiStateResource.Error -> {
+                val data = signUpSate.message
+                Toast.makeText(context,"Error occured : ${data}", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
 
     Box(modifier = Modifier
         .fillMaxSize()
@@ -131,7 +151,10 @@ fun SignUpScreen(
                         )
                         .padding(horizontal = 20.dp, vertical = 20.dp)
                         .fillMaxWidth()
-                        .clickable(onClick = {}), //navigateToHomeScreen.invoke()}),
+                        .clickable(onClick = {
+                            authViewModel.signUpUser(name,email,password)
+                            Log.d("butttonClick", "signup button click api called")
+                        }), //navigateToHomeScreen.invoke()}),
                     text = "Sign Up",
                     textAlign = TextAlign.Center,
                     fontSize = 16.sp,
@@ -140,27 +163,16 @@ fun SignUpScreen(
 
             }
 
-            when (val state = signUpSate.value) {
-                null -> {}
-                else -> {
-                    when(state.status){
-                        Status.LOADING -> {
-                            CircularProgressIndicator()
-                        }
 
-                        Status.ERROR -> {
-                            Toast.makeText(context,"Error in calling the api", Toast.LENGTH_SHORT).show()
-                        }
-
-                        Status.SUCCESS -> {
-                            Toast.makeText(context,"Signup Successful", Toast.LENGTH_SHORT).show()
-                            navigateToHomeScreen.invoke()
-                        }
-                    }
+            if( signUpSate is ApiStateResource.Loading ){
+                Box(
+                    modifier = Modifier.fillMaxSize()
+                        .background(Color.Black.copy(alpha = 0.3f)),
+                    contentAlignment = Alignment.Center
+                ){
+                    CircularProgressIndicator()
                 }
-
             }
-
         }
 
     }

@@ -24,13 +24,7 @@ class AuthRepoRepositoryImpl  : AuthRepository {
         }
     }
 
-    override suspend fun SignUpUser(signUpRequest: SignUpRequest): Resource<SignUpResponse> {
-       return try {
-           val response = authApiService.signUpRequest(signUpRequest)
-           responseHandler.handlerSuccess(response)
-       }catch (e : Exception) {
-           responseHandler.handleException(e)
-       }
-
+    override suspend fun SignUpUser(signUpRequest: SignUpRequest): SignUpResponse {
+        return authApiService.signUpRequest(signUpRequest);
     }
 }

@@ -6,6 +6,6 @@ import com.content.blogapplication.util.network.Resource
 
 interface AuthRepository {
 
-    suspend fun SignUpUser (signUpRequest: SignUpRequest) : Resource<SignUpResponse>
+    suspend fun SignUpUser (signUpRequest: SignUpRequest) : SignUpResponse
 
 }
