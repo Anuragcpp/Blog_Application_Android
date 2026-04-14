@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class SignUpResponse(
-    val status : String,
+    val status : Int,
     val message : String,
     val data : String?
 )

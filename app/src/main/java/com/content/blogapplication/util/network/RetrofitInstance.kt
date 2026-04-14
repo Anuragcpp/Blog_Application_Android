@@ -5,7 +5,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitInstance {
-    private const val BASE_URL = "api/"
+    private const val BASE_URL = Urls.BASE_URL
 
 //    private val logging = HttpLoggingInterceptor().apply {
 //        level = HttpLoggingInterceptor.Level.BODY

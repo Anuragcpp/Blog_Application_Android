@@ -1,6 +1,7 @@
 package com.content.blogapplication.auth.viewmodel
 
 import android.net.http.HttpException
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.content.blogapplication.auth.data.model.SignUpRequest
@@ -31,15 +32,19 @@ class AuthViewModel : ViewModel() {
         viewModelScope.launch (Dispatchers.IO){
             _signUpUserState.value = ApiStateResource.Loading
             try {
+                Log.d("butttonClick", "viewmodel -> reopsitory ")
                 val response = authRepository.SignUpUser(SignUpRequest(name,email,password))
                 _signUpUserState.value = ApiStateResource.Success<SignUpResponse>(response);
             }catch (e : retrofit2.HttpException){
+                Log.d("butttonClick", "http retrofit2.HttpException ${e.message}")
                 _signUpUserState.value = ApiStateResource.Error(
                     e.response()?.errorBody()?.string() ?: "Internal Server Error"
                 )
             } catch (e : IOException){
+                Log.d("butttonClick", "IOException ${e.message}")
                 _signUpUserState.value = ApiStateResource.Error( "No Internet Connection" )
             }catch (e : Exception){
+                Log.d("butttonClick", "Exception ${e.message}")
                 _signUpUserState.value = ApiStateResource.Error( "Something Went wrong" )
             }
         }

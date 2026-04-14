@@ -1,5 +1,6 @@
 package com.content.blogapplication.auth.data.repository
 
+import android.util.Log
 import com.content.blogapplication.auth.data.apiService.AuthApiService
 import com.content.blogapplication.auth.data.model.SignUpRequest
 import com.content.blogapplication.auth.data.model.SignUpResponse
@@ -25,6 +26,7 @@ class AuthRepoRepositoryImpl  : AuthRepository {
     }
 
     override suspend fun SignUpUser(signUpRequest: SignUpRequest): SignUpResponse {
+        Log.d("butttonClick", "repostory calling api service")
         return authApiService.signUpRequest(signUpRequest);
     }
 }
