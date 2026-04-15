@@ -34,11 +34,12 @@ class AuthViewModel : ViewModel() {
             try {
                 Log.d("butttonClick", "viewmodel -> reopsitory ")
                 val response = authRepository.SignUpUser(SignUpRequest(name,email,password))
+                Log.d("butttonClick","Response received : $response")
                 _signUpUserState.value = ApiStateResource.Success<SignUpResponse>(response);
             }catch (e : retrofit2.HttpException){
                 Log.d("butttonClick", "http retrofit2.HttpException ${e.message}")
                 _signUpUserState.value = ApiStateResource.Error(
-                    e.response()?.errorBody()?.string() ?: "Internal Server Error"
+                    e.response()?.errorBody()?.toString() ?: "Internal Server Error"
                 )
             } catch (e : IOException){
                 Log.d("butttonClick", "IOException ${e.message}")

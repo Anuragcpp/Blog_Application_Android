@@ -1,18 +1,19 @@
 package com.content.blogapplication.auth.data.model
 
+import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class SignUpRequest(
-    @SerialName("name")
-    var name :  String? = null,
+    @SerializedName("name")
+    val name: String,
 
-    @SerialName("email")
-    var email : String? = null,
+    @SerializedName("email")
+    val email: String,
 
-    @SerialName("password")
-    var password : String? = null
+    @SerializedName("password")
+    val password: String
 
 
 )

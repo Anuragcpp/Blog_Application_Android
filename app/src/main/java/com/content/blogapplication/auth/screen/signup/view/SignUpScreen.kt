@@ -44,6 +44,7 @@ import com.content.blogapplication.auth.viewmodel.AuthViewModel
 import com.content.blogapplication.util.network.ApiStateResource
 import com.content.blogapplication.util.network.Resource
 import com.content.blogapplication.util.network.Status
+import kotlinx.coroutines.isActive
 import kotlinx.serialization.Contextual
 
 @Composable
@@ -59,17 +60,19 @@ fun SignUpScreen(
     var name by remember { mutableStateOf("") }
     val context : Context = LocalContext.current
 
+    LaunchedEffect(signUpSate.value) {
+        when(val state = signUpSate.value) {
+            is ApiStateResource.Success -> {
 
-    LaunchedEffect(signUpSate) {
-        when(signUpSate){
-            is ApiStateResource.Success<*>-> {
-                Toast.makeText(context,"Signup Successfull", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, state.data.message, Toast.LENGTH_SHORT).show()
                 navigateToHomeScreen();
             }
-
             is ApiStateResource.Error -> {
-                val data = signUpSate.message
-                Toast.makeText(context,"Error occured : ${data}", Toast.LENGTH_SHORT).show()
+                val data = state.message
+                Toast.makeText(context,data, Toast.LENGTH_SHORT).show()
+            }
+            else ->  {
+
             }
         }
     }
@@ -164,7 +167,7 @@ fun SignUpScreen(
             }
 
 
-            if( signUpSate is ApiStateResource.Loading ){
+            if( signUpSate.value is ApiStateResource.Loading ){
                 Box(
                     modifier = Modifier.fillMaxSize()
                         .background(Color.Black.copy(alpha = 0.3f)),
