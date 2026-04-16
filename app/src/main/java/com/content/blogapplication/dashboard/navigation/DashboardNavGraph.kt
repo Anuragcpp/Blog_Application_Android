@@ -6,7 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.content.blogapplication.dashboard.screens.homeScreen.view.HomeScreen
-import com.content.blogapplication.rootNavigation.DashboardGraphRoute
+import com.content.blogapplication.mainactivty.rootNavigation.DashboardGraphRoute
 
 fun NavGraphBuilder.dashboardNavGraph(
     innerPadding : PaddingValues,

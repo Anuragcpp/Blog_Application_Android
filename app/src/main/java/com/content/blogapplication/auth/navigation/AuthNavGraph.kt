@@ -5,11 +5,10 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.content.blogapplication.auth.data.model.SignInRequest
 import com.content.blogapplication.auth.screen.SignInScreen
 import com.content.blogapplication.auth.screen.SignUpScreen
 import com.content.blogapplication.dashboard.navigation.HomeScreen
-import com.content.blogapplication.rootNavigation.AuthGraphRoute
+import com.content.blogapplication.mainactivty.rootNavigation.AuthGraphRoute
 
 fun NavGraphBuilder.authNavGraph(
     innerPadding : PaddingValues,
