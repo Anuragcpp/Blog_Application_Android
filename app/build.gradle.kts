@@ -6,6 +6,9 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.serializer)
+    //id("com.google.devtools.ksp")
+    alias(libs.plugins.ksp)
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -110,4 +113,8 @@ dependencies {
     testImplementation ("androidx.lifecycle:lifecycle-runtime-testing:$lifecycle_version")
 
     implementation("androidx.compose.runtime:runtime-livedata:1.6.0")
+
+    //hilt
+    implementation("com.google.dagger:hilt-android:2.59.2")
+    ksp("com.google.dagger:hilt-android-compiler:2.59.2")
 }
