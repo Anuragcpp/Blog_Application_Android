@@ -1,4 +1,4 @@
-package com.content.blogapplication.rootNavigation
+package com.content.blogapplication.mainactivty.rootNavigation
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.navigation.NavHostController
@@ -10,3 +10,6 @@ object AuthGraphRoute
 
 @Serializable
 object DashboardGraphRoute
+
+@Serializable
+object SplashScreenRoute

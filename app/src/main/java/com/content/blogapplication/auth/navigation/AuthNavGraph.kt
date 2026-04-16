@@ -5,9 +5,10 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.content.blogapplication.auth.screen.signup.view.SignUpScreen
+import com.content.blogapplication.auth.screen.SignInScreen
+import com.content.blogapplication.auth.screen.SignUpScreen
 import com.content.blogapplication.dashboard.navigation.HomeScreen
-import com.content.blogapplication.rootNavigation.AuthGraphRoute
+import com.content.blogapplication.mainactivty.rootNavigation.AuthGraphRoute
 
 fun NavGraphBuilder.authNavGraph(
     innerPadding : PaddingValues,
@@ -18,10 +19,25 @@ fun NavGraphBuilder.authNavGraph(
         startDestination = SignUpRoute
     ){
         composable<SignUpRoute> {
-            SignUpScreen(innerPadding = innerPadding) {
+            SignUpScreen(
+                innerPadding = innerPadding,
+                navigateToSingInScreen = {
+                    navHostController.navigate(SignInRoute){
+                        popUpTo (SignUpRoute){inclusive = true}
+                    }
+                }
+            ) {
                navHostController.navigate(HomeScreen) {
                    popUpTo(AuthGraphRoute){ inclusive = true}
                }
+            }
+        }
+
+        composable  < SignInRoute> {
+            SignInScreen(innerPadding = innerPadding) {
+                navHostController.navigate(HomeScreen){
+                    popUpTo(AuthGraphRoute) { inclusive = true }
+                }
             }
         }
     }

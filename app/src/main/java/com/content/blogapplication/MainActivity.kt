@@ -5,14 +5,15 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
-import com.content.blogapplication.rootNavigation.RootNavGraph
+import com.content.blogapplication.mainactivty.rootNavigation.RootNavGraph
+import com.content.blogapplication.mainactivty.viewModel.MainViewModel
 import com.content.blogapplication.ui.theme.BlogApplicationTheme
 
 class MainActivity : ComponentActivity() {
@@ -22,12 +23,13 @@ class MainActivity : ComponentActivity() {
         setContent {
             BlogApplicationTheme {
                 val navController = rememberNavController()
+                val mainViewModel : MainViewModel = viewModel()
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
 //                    Greeting(
 //                        name = "Android",
 //                        modifier = Modifier.padding(innerPadding)
 //                    )
-                    RootNavGraph(navController,innerPadding)
+                    RootNavGraph(navController,innerPadding, viewModel = mainViewModel)
                 }
             }
         }

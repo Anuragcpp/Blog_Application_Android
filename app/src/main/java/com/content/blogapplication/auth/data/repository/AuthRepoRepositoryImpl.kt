@@ -1,6 +1,9 @@
 package com.content.blogapplication.auth.data.repository
 
+import android.util.Log
 import com.content.blogapplication.auth.data.apiService.AuthApiService
+import com.content.blogapplication.auth.data.model.SignInRequest
+import com.content.blogapplication.auth.data.model.SignInResponse
 import com.content.blogapplication.auth.data.model.SignUpRequest
 import com.content.blogapplication.auth.data.model.SignUpResponse
 import com.content.blogapplication.util.network.Resource
@@ -24,13 +27,12 @@ class AuthRepoRepositoryImpl  : AuthRepository {
         }
     }
 
-    override suspend fun SignUpUser(signUpRequest: SignUpRequest): Resource<SignUpResponse> {
-       return try {
-           val response = authApiService.signUpRequest(signUpRequest)
-           responseHandler.handlerSuccess(response)
-       }catch (e : Exception) {
-           responseHandler.handleException(e)
-       }
+    override suspend fun SignUpUser(signUpRequest: SignUpRequest): SignUpResponse {
+        Log.d("butttonClick", "repostory calling api service")
+        return authApiService.signUpRequest(signUpRequest);
+    }
 
+    override suspend fun signInUser(signInRequest: SignInRequest): SignInResponse {
+        return authApiService.signInRequest(signInRequest);
     }
 }
