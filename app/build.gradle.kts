@@ -8,16 +8,19 @@ plugins {
     alias(libs.plugins.serializer)
     //id("com.google.devtools.ksp")
     alias(libs.plugins.ksp)
-    id("com.google.dagger.hilt.android")
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.hilt)
 }
 
 android {
     namespace = "com.content.blogapplication"
-    compileSdk {
-        version = release(36) {
-            minorApiLevel = 1
-        }
-    }
+//    compileSdk {
+//        version = release(36) {
+//            minorApiLevel = 1
+//        }
+//    }
+
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.content.blogapplication"
@@ -39,8 +42,12 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17   //.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_17  //.VERSION_11
+    }
+
+    kotlinOptions {
+        jvmTarget = "17"
     }
     buildFeatures {
         compose = true
@@ -64,6 +71,16 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
+
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    ksp(libs.room.compiler)
+
+    //annotationProcessor(libs.room.compiler)
+
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.compiler)
+    implementation(libs.androidx.hilt.navigation.compose)
 
     val nav_version = "2.9.7"
 
@@ -115,6 +132,6 @@ dependencies {
     implementation("androidx.compose.runtime:runtime-livedata:1.6.0")
 
     //hilt
-    implementation("com.google.dagger:hilt-android:2.59.2")
-    ksp("com.google.dagger:hilt-android-compiler:2.59.2")
+    //implementation("com.google.dagger:hilt-android:2.59.2")
+        //ksp("com.google.dagger:hilt-android-compiler:2.59.2")
 }
