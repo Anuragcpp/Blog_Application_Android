@@ -149,20 +149,19 @@ fun SignUpScreen(
 
                 Button (
                     modifier = Modifier
-                        .background(
-                            color = Color.Magenta,
-                            shape = RoundedCornerShape(12.dp)
-                        )
-                        .padding(horizontal = 20.dp, vertical = 20.dp)
+                        .padding(vertical = 5.dp)
                         .fillMaxWidth(),
                     onClick = {authViewModel.signUpUser(name,email,password)}
                 ){
 
-                    if (loadingState) CircularProgressIndicator()
+                    if (loadingState) CircularProgressIndicator(
+                        modifier = Modifier.background(
+                            color = Color.White
+                        )
+                    )
                     else {
                         Text(
-                            modifier = Modifier
-                                .padding(horizontal = 20.dp, vertical = 20.dp), //navigateToHomeScreen.invoke()}),
+                            modifier = Modifier,
                             text = "Sign Up",
                             textAlign = TextAlign.Center,
                             fontSize = 16.sp,
