@@ -43,11 +43,12 @@ import com.content.blogapplication.util.network.ApiStateResource
 @Composable
 fun SignUpScreen(
     innerPadding : PaddingValues,
+    authViewModel: AuthViewModel,
     navigateToSingInScreen : () -> Unit,
     navigateToHomeScreen : () -> Unit
 ){
 
-    val authViewModel : AuthViewModel = viewModel()
+    //val authViewModel : AuthViewModel = viewModel()
     val signUpSate = authViewModel.signUpUserState.collectAsState()
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -151,7 +152,10 @@ fun SignUpScreen(
                     modifier = Modifier
                         .padding(vertical = 5.dp)
                         .fillMaxWidth(),
-                    onClick = {authViewModel.signUpUser(name,email,password)}
+                    onClick = {
+                        Log.d("authFlowNotworkking", "button clicked")
+                        authViewModel.signUpUser(name,email,password)
+                    }
                 ){
 
                     if (loadingState) CircularProgressIndicator(

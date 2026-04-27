@@ -9,9 +9,13 @@ import com.content.blogapplication.auth.data.model.SignUpResponse
 import com.content.blogapplication.util.network.Resource
 import com.content.blogapplication.util.network.ResponseHandler
 import com.content.blogapplication.util.network.RetrofitInstance
+import jakarta.inject.Inject
 
-class AuthRepoRepositoryImpl  : AuthRepository {
+class AuthRepoRepositoryImpl @Inject constructor(
+    private val authApiService : AuthApiService
+)  : AuthRepository {
 
+    /*
     private val authApiService by lazy {  RetrofitInstance.getRetrofitInstance().create(
         AuthApiService::class.java)
     }
@@ -27,8 +31,9 @@ class AuthRepoRepositoryImpl  : AuthRepository {
         }
     }
 
+     */
+
     override suspend fun SignUpUser(signUpRequest: SignUpRequest): SignUpResponse {
-        Log.d("butttonClick", "repostory calling api service")
         return authApiService.signUpRequest(signUpRequest);
     }
 
