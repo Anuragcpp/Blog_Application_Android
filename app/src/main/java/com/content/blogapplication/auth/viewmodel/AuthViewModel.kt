@@ -10,20 +10,29 @@ import com.content.blogapplication.auth.data.model.SignInResponse
 import com.content.blogapplication.auth.data.model.SignUpRequest
 import com.content.blogapplication.auth.data.model.SignUpResponse
 import com.content.blogapplication.auth.data.repository.AuthRepoRepositoryImpl
+import com.content.blogapplication.auth.data.repository.AuthRepository
 import com.content.blogapplication.util.network.ApiStateResource
 import com.content.blogapplication.util.network.Resource
 import com.content.blogapplication.util.sharedPreference.SharedPreferenceManager
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import java.io.IOException
+import javax.inject.Inject
 
-class AuthViewModel : ViewModel() {
+@HiltViewModel
+class AuthViewModel @Inject constructor (
+    private val authRepository : AuthRepository
+) : ViewModel() {
+    /*
     private val authRepository by lazy {
         AuthRepoRepositoryImpl.getInstance()
     }
+
+     */
 
     private val _signUpUserState = MutableStateFlow<ApiStateResource<SignUpResponse>>(ApiStateResource.Idle)
     val signUpUserState = _signUpUserState.asStateFlow();
@@ -43,7 +52,6 @@ class AuthViewModel : ViewModel() {
         viewModelScope.launch (Dispatchers.IO){
             _signUpUserState.value = ApiStateResource.Loading
             try {
-                Log.d("butttonClick", "viewmodel -> reopsitory ")
                 val response = authRepository.SignUpUser(SignUpRequest(name,email,password))
                 preferenceManager.setToken(response.data!!)
 

@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -42,30 +43,38 @@ import com.content.blogapplication.util.network.ApiStateResource
 @Composable
 fun SignUpScreen(
     innerPadding : PaddingValues,
+    authViewModel: AuthViewModel,
     navigateToSingInScreen : () -> Unit,
     navigateToHomeScreen : () -> Unit
 ){
 
-    val authViewModel : AuthViewModel = viewModel()
+    //val authViewModel : AuthViewModel = viewModel()
     val signUpSate = authViewModel.signUpUserState.collectAsState()
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var name by remember { mutableStateOf("") }
     val context : Context = LocalContext.current
+    var loadingState by remember { mutableStateOf(false) }
 
     LaunchedEffect(signUpSate.value) {
         when(val state = signUpSate.value) {
             is ApiStateResource.Success -> {
-
+                loadingState = false
                 Toast.makeText(context, state.data.message, Toast.LENGTH_SHORT).show()
                 navigateToHomeScreen();
             }
             is ApiStateResource.Error -> {
+                loadingState = false
                 val data = state.message
                 Toast.makeText(context,data, Toast.LENGTH_SHORT).show()
             }
-            else ->  {
 
+            ApiStateResource.Loading -> {
+                loadingState = true
+            }
+
+            ApiStateResource.Idle -> {
+                loadingState = false
             }
         }
     }
@@ -139,23 +148,34 @@ fun SignUpScreen(
 
                 Spacer(modifier = Modifier.height(20.dp))
 
-                Text(
+                Button (
                     modifier = Modifier
-                        .background(
-                            color = Color.Magenta,
-                            shape = RoundedCornerShape(12.dp)
+                        .padding(vertical = 5.dp)
+                        .fillMaxWidth(),
+                    onClick = {
+                        Log.d("authFlowNotworkking", "button clicked")
+                        authViewModel.signUpUser(name,email,password)
+                    }
+                ){
+
+                    if (loadingState) CircularProgressIndicator(
+                        modifier = Modifier.background(
+                            color = Color.White
                         )
-                        .padding(horizontal = 20.dp, vertical = 20.dp)
-                        .fillMaxWidth()
-                        .clickable(onClick = {
-                            authViewModel.signUpUser(name,email,password)
-                            Log.d("butttonClick", "signup button click api called")
-                        }), //navigateToHomeScreen.invoke()}),
-                    text = "Sign Up",
-                    textAlign = TextAlign.Center,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold
-                )
+                    )
+                    else {
+                        Text(
+                            modifier = Modifier,
+                            text = "Sign Up",
+                            textAlign = TextAlign.Center,
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+
+
+
+                }
 
                 Spacer(modifier = Modifier.height(20.dp))
 

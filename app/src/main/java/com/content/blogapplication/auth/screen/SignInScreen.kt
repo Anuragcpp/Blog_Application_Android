@@ -41,10 +41,11 @@ import com.content.blogapplication.util.network.ApiStateResource
 @Composable
 fun SignInScreen(
     innerPadding : PaddingValues,
+    authViewModel : AuthViewModel,
     navigateToHomeScreen : () -> Unit
 ){
 
-    val authViewModel : AuthViewModel = viewModel()
+    //val authViewModel : AuthViewModel = viewModel()
     val signInState = authViewModel.signInUserState.collectAsState()
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
