@@ -38,6 +38,7 @@ class AuthRepoRepositoryImpl @Inject constructor(
     }
 
     override suspend fun signInUser(signInRequest: SignInRequest): SignInResponse {
+        Log.d("butttonClick","repostory")
         return authApiService.signInRequest(signInRequest);
     }
 }

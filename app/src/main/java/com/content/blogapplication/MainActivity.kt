@@ -10,6 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import com.content.blogapplication.mainactivty.rootNavigation.RootNavGraph
@@ -25,7 +26,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             BlogApplicationTheme {
                 val navController = rememberNavController()
-                val mainViewModel : MainViewModel = viewModel()
+                val mainViewModel : MainViewModel = hiltViewModel()
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
 //                    Greeting(
 //                        name = "Android",

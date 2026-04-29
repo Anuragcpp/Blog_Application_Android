@@ -25,7 +25,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AuthViewModel @Inject constructor (
-    private val authRepository : AuthRepository
+    private val authRepository : AuthRepository,
+    private val preferenceManager : SharedPreferenceManager
 ) : ViewModel() {
     /*
     private val authRepository by lazy {
@@ -41,8 +42,8 @@ class AuthViewModel @Inject constructor (
         ApiStateResource.Idle)
     val signInUserState = _signInUserState.asStateFlow();
 
-    private val preferenceManager : SharedPreferenceManager by lazy { SharedPreferenceManager.getInstance(
-        BaseApplication.mContext) }
+//    private val preferenceManager : SharedPreferenceManager by lazy { SharedPreferenceManager.getInstance(
+//        BaseApplication.mContext) }
 
     fun signUpUser(
         name : String,
@@ -75,7 +76,9 @@ class AuthViewModel @Inject constructor (
         email : String,
         password: String
     ) {
+        Log.d("butttonClick","viewmod before")
         viewModelScope.launch (Dispatchers.IO) {
+            Log.d("butttonClick","viewmodl")
             _signInUserState.value = ApiStateResource.Loading
             try {
                 val response = authRepository.signInUser(SignInRequest(email,password))
@@ -83,13 +86,13 @@ class AuthViewModel @Inject constructor (
                 _signInUserState.value = ApiStateResource.Success(response)
                 Log.d("butttonClick","Response received : $response")
             }catch ( e : retrofit2.HttpException ){
-                _signUpUserState.value = ApiStateResource.Error( e.message ?: "Something Went wrong" )
+                _signInUserState.value = ApiStateResource.Error( e.message ?: "Something Went wrong" )
                 Log.d("butttonClick", "http retrofit2.HttpException ${e.message}")
             }catch ( e : IOException){
-                _signUpUserState.value = ApiStateResource.Error( e.message ?: "No Internet Connection ")
-                _signUpUserState.value = ApiStateResource.Error( "No Internet Connection" )
+                _signInUserState.value = ApiStateResource.Error( e.message ?: "No Internet Connection ")
+                _signInUserState.value = ApiStateResource.Error( "No Internet Connection" )
             }catch ( e : Exception ){
-                _signUpUserState.value = ApiStateResource.Error( e.message ?: "Something Went wrong" )
+                _signInUserState.value = ApiStateResource.Error( e.message ?: "Something Went wrong" )
                 Log.d("butttonClick", "Exception ${e.message}")
             }
         }

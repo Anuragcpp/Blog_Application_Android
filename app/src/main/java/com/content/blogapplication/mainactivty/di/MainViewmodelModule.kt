@@ -1,7 +1,6 @@
-package com.content.blogapplication.auth.di
+package com.content.blogapplication.mainactivty.di
 
-import com.content.blogapplication.auth.data.repository.AuthRepository
-import com.content.blogapplication.auth.viewmodel.AuthViewModel
+import com.content.blogapplication.mainactivty.viewModel.MainViewModel
 import com.content.blogapplication.util.sharedPreference.SharedPreferenceManager
 import dagger.Module
 import dagger.Provides
@@ -11,14 +10,13 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object AuthViewmodelModule {
+object MainViewmodelModule {
 
     @Provides
     @Singleton
-    fun provideAuthViewModel(
-        authRepository: AuthRepository,
+    fun provideMainViewModel(
         sharedPreferenceManager: SharedPreferenceManager
-    ) : AuthViewModel {
-        return AuthViewModel(authRepository,sharedPreferenceManager)
+    ) : MainViewModel {
+        return MainViewModel(sharedPreferenceManager)
     }
 }
